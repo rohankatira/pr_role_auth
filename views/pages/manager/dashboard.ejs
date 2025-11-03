@@ -1,0 +1,318 @@
+ <%- include('../../partials/header', { title: 'Manager Dashboard', user: user }) %>
+
+<div class="page-wrapper">
+  <!-- Welcome Card -->
+  <div class="welcome-card">
+    <h1 class="welcome-title">
+      <span class="crown-icon">👑</span>
+      Welcome, <%= user.name %>
+    </h1>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="stats-grid">
+    <!-- Total Employees -->
+    <div class="stat-card employees">
+      <div class="stat-icon-wrapper">
+        <i class="bi bi-people-fill stat-icon"></i>
+      </div>
+      <div class="stat-label">Total Employees</div>
+      <div class="stat-value"><%= employeeCount %></div>
+      <div class="stat-trend positive">
+        <i class="bi bi-arrow-up-short"></i>
+        <span>Active workforce</span>
+      </div>
+    </div>
+
+    <!-- Total Tasks -->
+    <div class="stat-card total-tasks">
+      <div class="stat-icon-wrapper">
+        <i class="bi bi-clipboard-check-fill stat-icon"></i>
+      </div>
+      <div class="stat-label">Total Tasks Assigned</div>
+      <div class="stat-value"><%= totalTasks %></div>
+      <div class="stat-trend">
+        <i class="bi bi-activity"></i>
+        <span>All tasks</span>
+      </div>
+    </div>
+
+    <!-- Pending Tasks -->
+    <div class="stat-card pending">
+      <div class="stat-icon-wrapper">
+        <i class="bi bi-hourglass-split stat-icon"></i>
+      </div>
+      <div class="stat-label">Pending Tasks</div>
+      <div class="stat-value"><%= pendingTasks %></div>
+      <div class="stat-trend">
+        <i class="bi bi-clock"></i>
+        <span>In progress</span>
+      </div>
+    </div>
+
+    <!-- Completed Tasks -->
+    <div class="stat-card completed">
+      <div class="stat-icon-wrapper">
+        <i class="bi bi-check-circle-fill stat-icon"></i>
+      </div>
+      <div class="stat-label">Completed Tasks</div>
+      <div class="stat-value"><%= completedTasks %></div>
+      <div class="stat-trend positive">
+        <i class="bi bi-arrow-up-short"></i>
+        <span><%= Math.round((completedTasks / totalTasks) * 100) || 0 %>% completion rate</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../../partials/footer') %>
+
+<style>
+  :root {
+    --color-primary: #667eea;
+    --color-primary-dark: #764ba2;
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-danger: #ef4444;
+    --color-info: #3b82f6;
+    --color-text: #1f2937;
+    --color-white: #ffffff;
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.12);
+    --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.08);
+    --radius-lg: 16px;
+  }
+
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .page-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    min-height: 90vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .welcome-card {
+    margin-top: 15px;
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .welcome-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .welcome-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .welcome-title .crown-icon {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.3));
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .stat-card {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--card-color-1), var(--card-color-2));
+  }
+
+  .stat-card.employees {
+    --card-color-1: #667eea;
+    --card-color-2: #764ba2;
+  }
+
+  .stat-card.total-tasks {
+    --card-color-1: #3b82f6;
+    --card-color-2: #2563eb;
+  }
+
+  .stat-card.pending {
+    --card-color-1: #f59e0b;
+    --card-color-2: #d97706;
+  }
+
+  .stat-card.completed {
+    --card-color-1: #10b981;
+    --card-color-2: #059669;
+  }
+
+  .stat-icon-wrapper {
+    width: 70px;
+    height: 70px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .stat-card.employees .stat-icon-wrapper {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+  }
+
+  .stat-card.total-tasks .stat-icon-wrapper {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.15));
+  }
+
+  .stat-card.pending .stat-icon-wrapper {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.15));
+  }
+
+  .stat-card.completed .stat-icon-wrapper {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.15));
+  }
+
+  .stat-icon {
+    font-size: 2rem;
+  }
+
+  .stat-card.employees .stat-icon {
+    color: #667eea;
+  }
+
+  .stat-card.total-tasks .stat-icon {
+    color: #3b82f6;
+  }
+
+  .stat-card.pending .stat-icon {
+    color: #f59e0b;
+  }
+
+  .stat-card.completed .stat-icon {
+    color: #10b981;
+  }
+
+  .stat-label {
+    font-size: 0.95rem;
+    color: #6b7280;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1;
+  }
+
+  .stat-trend {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .stat-trend.positive {
+    color: #10b981;
+  }
+
+  .stat-trend.negative {
+    color: #ef4444;
+  }
+
+  @media (max-width: 768px) {
+    body {
+      padding: 1rem 0;
+    }
+
+    .welcome-card {
+      padding: 1.5rem;
+    }
+
+    .welcome-title {
+      font-size: 1.5rem;
+    }
+
+    .welcome-title .crown-icon {
+      font-size: 2rem;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .stat-card {
+      padding: 1.5rem;
+    }
+
+    .stat-icon-wrapper {
+      width: 60px;
+      height: 60px;
+    }
+
+    .stat-icon {
+      font-size: 1.75rem;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .welcome-title {
+      font-size: 1.25rem;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

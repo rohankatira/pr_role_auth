@@ -1,0 +1,298 @@
+<%- include('../../partials/header', { user: user }) %>
+  <div class="page-wrapper">
+    <div class="form-card">
+      <div class="form-header">
+        <h1 class="form-title">
+          <i class="bi bi-clipboard-plus"></i>
+          Assign New Task
+        </h1>
+        <p class="form-subtitle">Fill out the form below to assign a task to an employee</p>
+      </div>
+
+      <form action="/manager/assign-task" method="POST">
+        <!-- Title -->
+        <div class="form-group">
+          <label class="form-label">
+            <i class="bi bi-pencil-square"></i> Task Title
+          </label>
+          <input type="text" name="title" class="form-control" placeholder="Enter task title" required>
+          <div class="info-text"><i class="bi bi-info-circle"></i> Provide a clear and concise title</div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label class="form-label">
+            <i class="bi bi-file-text"></i> Description
+          </label>
+          <textarea name="description" class="form-control" placeholder="Describe the task details..." rows="4"></textarea>
+          <div class="info-text"><i class="bi bi-info-circle"></i> Include relevant details and requirements</div>
+        </div>
+
+        <!-- Priority -->
+        <div class="form-group">
+          <label class="form-label">
+            <i class="bi bi-exclamation-circle"></i> Priority Level
+          </label>
+          <select name="priority" class="form-select">
+            <option value="Low">Low Priority</option>
+            <option value="Medium" selected>Medium Priority</option>
+            <option value="High">High Priority</option>
+          </select>
+          <div class="priority-badges">
+            <span class="priority-badge low">🟢 Low</span>
+            <span class="priority-badge medium">🟡 Medium</span>
+            <span class="priority-badge high">🔴 High</span>
+          </div>
+        </div>
+
+        <!-- Deadline -->
+        <div class="form-group">
+          <label class="form-label">
+            <i class="bi bi-calendar-event"></i> Deadline
+          </label>
+          <input type="date" name="deadline" class="form-control">
+          <div class="info-text"><i class="bi bi-info-circle"></i> Set a realistic completion date</div>
+        </div>
+
+        <!-- Assign To -->
+        <div class="form-group">
+          <label class="form-label">
+            <i class="bi bi-person-check"></i> Assign To Employee
+          </label>
+          <select name="assignedTo" class="form-select" required>
+            <option value="">-- Select an employee --</option>
+            <% employees.forEach(emp => { %>
+              <option value="<%= emp._id %>"><%= emp.name %> (<%= emp.email %>)</option>
+            <% }) %>
+          </select>
+          <div class="info-text"><i class="bi bi-info-circle"></i> Choose the responsible employee</div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="button-group">
+          <a href="/manager/dashboard" class="btn btn-secondary">
+            <i class="bi bi-x-circle"></i> Cancel
+          </a>
+          <button type="submit" class="btn btn-success">
+            <i class="bi bi-check-circle"></i> Assign Task
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+<style>
+    :root {
+      --color-primary: #667eea;
+      --color-primary-dark: #764ba2;
+      --color-success: #10b981;
+      --color-text: #1f2937;
+      --color-white: #ffffff;
+      --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.12);
+      --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.08);
+      --radius-lg: 16px;
+    }
+
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+        .page-wrapper {
+      min-height: 90vh;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .form-card {
+      width: 100%;
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .form-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #f3f4f6;
+    }
+
+    .form-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--color-text);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .form-title i {
+      font-size: 2rem;
+      color: #667eea;
+    }
+
+    .form-subtitle {
+      font-size: 0.95rem;
+      color: #6b7280;
+      margin-top: 0.5rem;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .form-label i {
+      font-size: 1.1rem;
+      color: #667eea;
+    }
+
+    .form-control {
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+    .form-select{
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+      outline: none;
+    }
+
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .priority-badges {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .priority-badge {
+      padding: 0.35rem 0.85rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .priority-badge.low {
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+      border-color: #10b981;
+    }
+
+    .priority-badge.medium {
+      background: rgba(245, 158, 11, 0.1);
+      color: #f59e0b;
+      border-color: #f59e0b;
+    }
+
+    .priority-badge.high {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      border-color: #ef4444;
+    }
+
+    .btn {
+      padding: 0.75rem 2rem;
+      font-weight: 600;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      border: none;
+      font-size: 0.95rem;
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: var(--color-white);
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-success:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    }
+
+    .btn-secondary {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+
+    .btn-secondary:hover {
+      background: #e5e7eb;
+      color: #4b5563;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 2px solid #f3f4f6;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .info-text {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .info-text i {
+      color: #667eea;
+    }
+
+    @media (max-width: 768px) {
+      body { padding: 1rem 0; }
+      .form-card { padding: 1.5rem; }
+      .form-title { font-size: 1.5rem; }
+      .button-group { flex-direction: column-reverse; }
+      .btn { width: 100%; }
+    }
+  </style>
+
+<%- include('../../partials/footer') %>

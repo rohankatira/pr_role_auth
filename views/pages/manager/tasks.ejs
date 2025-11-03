@@ -1,0 +1,271 @@
+<%- include('../../partials/header', { title: 'Assigned Tasks', user: user }) %>
+
+<div class="page-wrapper">
+  <!-- Header -->
+  <div class="header-card">
+    <h1 class="header-title">
+      <i class="bi bi-list-task"></i>
+      Assigned Tasks
+    </h1>
+  </div>
+
+  <!-- Tasks Table -->
+  <div class="table-card">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Task Title</th>
+            <th>Description</th>
+            <th>Assigned To</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (tasks.length === 0) { %>
+            <tr>
+              <td colspan="4" class="text-center text-muted py-4">
+                <div class="empty-state">
+                  <i class="bi bi-inbox"></i>
+                  <h4>No tasks assigned yet</h4>
+                </div>
+              </td>
+            </tr>
+          <% } else { %>
+            <% tasks.forEach(task => { %>
+              <tr>
+                <td>
+                  <div class="task-title">
+                    <i class="bi bi-check-circle"></i>
+                    <%= task.title %>
+                  </div>
+                </td>
+                <td>
+                  <div class="task-description"><%= task.description %></div>
+                </td>
+                <td>
+                  <% if (task.assignedTo) { %>
+                    <div class="employee-info">
+                      <i class="bi bi-person-circle"></i>
+                      <div>
+                        <div class="employee-name"><%= task.assignedTo.name %></div>
+                        <div class="employee-email"><%= task.assignedTo.email %></div>
+                      </div>
+                    </div>
+                  <% } else { %>
+                    <em>Unassigned</em>
+                  <% } %>
+                </td>
+                <td>
+                  <% if (task.status === 'completed') { %>
+                    <span class="badge-status completed"><i class="bi bi-check-circle-fill"></i> Completed</span>
+                  <% } else if (task.status === 'in-progress') { %>
+                    <span class="badge-status in-progress"><i class="bi bi-hourglass-split"></i> In Progress</span>
+                  <% } else { %>
+                    <span class="badge-status pending"><i class="bi bi-clock"></i> Pending</span>
+                  <% } %>
+                </td>
+              </tr>
+            <% }) %>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+  :root {
+    --color-primary: #667eea;
+    --color-primary-dark: #764ba2;
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-text: #1f2937;
+    --color-white: #ffffff;
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.12);
+    --radius-lg: 16px;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .page-wrapper {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    min-height: 100vh;
+  }
+
+  .header-card {
+    margin-top: 15px;
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .header-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+  }
+
+  .header-title i {
+    font-size: 2rem;
+    color: #667eea;
+  }
+
+  .table-card {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-lg);
+    margin-bottom: 2rem;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+  }
+
+  .table thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: var(--color-white);
+  }
+
+  .table thead th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: none;
+  }
+
+  .table tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: middle;
+  }
+
+  .table tbody tr:hover {
+    background: #f9fafb;
+    transform: scale(1.002);
+  }
+
+  .task-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .task-title i {
+    color: #667eea;
+    font-size: 1.2rem;
+  }
+
+  .employee-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .employee-info i {
+    font-size: 1.5rem;
+    color: #667eea;
+  }
+
+  .employee-name {
+    font-weight: 600;
+    color: var(--color-text);
+    font-size: 0.95rem;
+  }
+
+  .employee-email {
+    font-size: 0.85rem;
+    color: #6b7280;
+  }
+
+  .badge-status {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-transform: capitalize;
+  }
+
+  .badge-status.pending {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #92400e;
+    border: 1px solid #fbbf24;
+  }
+
+  .badge-status.in-progress {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    color: #1e40af;
+    border: 1px solid #3b82f6;
+  }
+
+  .badge-status.completed {
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    color: #065f46;
+    border: 1px solid #10b981;
+  }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 1rem;
+  }
+
+  .empty-state i {
+    font-size: 3rem;
+    color: #d1d5db;
+    margin-bottom: 1rem;
+  }
+
+  .empty-state h4 {
+    color: #9ca3af;
+    font-weight: 500;
+    font-size: 1.1rem;
+  }
+</style>
+
+<%- include('../../partials/footer') %>
